@@ -1,4 +1,4 @@
--- creates a table user with unique columns with names: id, email and name
+-- creates a table users with columns (id, email, name) and unique columns: id, email
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(255) NOT NULL UNIQUE,
