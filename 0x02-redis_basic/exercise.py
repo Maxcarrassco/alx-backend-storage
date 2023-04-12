@@ -30,7 +30,7 @@ def call_history(method: Callable) -> Callable:
         fn_out = method(self, data)
         self._redis.rpush(inp, str(data))
         self._redis.rpush(out, fn_out)
-        return self._redis.lrange(out, 0, -1)
+        return fn_out
     return wrapper
 
 
