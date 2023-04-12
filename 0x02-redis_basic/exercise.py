@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ALX SE Backend Redis Module."""
 import redis
-from typing import Union, Callable
+from typing import Union, Callable, Any
 import uuid
 
 
@@ -21,9 +21,9 @@ class Cache:
         self._redis.set(key, data)
         return key
 
-    def get(self, key, fn: Union[Callable, None]):
+    def get(self, key, fn: Union[Callable, None] = None):
         """Return the value of a key in its rightful type."""
-        value = self._redis.get(key)
+        value: Any = self._redis.get(key)
 
         if value is None:
             return value
