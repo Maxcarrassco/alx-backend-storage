@@ -6,17 +6,17 @@ import uuid
 from functools import wraps
 
 
-def count_calls(fn: Callable) -> Callable:
+def count_calls(method: Callable) -> Callable:
     """
       Keep track of the amount of times a method with
       access to a redis instance is call.
     """
-    @wraps(fn)
-    def wrapper(self, data) -> str:
+    @wraps(method)
+    def wrapper(self, data):
         """This is the wrapper itself."""
-        key = fn.__qualname__
+        key = method.__qualname__
         self._redis.incr(key)
-        return fn(self, data)
+        return method(self, data)
     return wrapper
 
 
