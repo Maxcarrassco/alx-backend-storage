@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """ALX SE Backend Redis Module."""
-from redis import Redis
+import redis
 from typing import Union
 import uuid
 
@@ -9,7 +9,7 @@ class Cache:
     """This model implement a simple caching machanism using redis."""
     def __init__(self) -> None:
         """Initialize my cache model."""
-        self._redis: Redis = Redis()
+        self._redis = redis.Redis()
         self._redis.flushdb()
 
     def store(self, data: Union[str, bytes, int, float]) -> str:
