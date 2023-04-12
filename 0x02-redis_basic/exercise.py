@@ -12,23 +12,23 @@ def count_calls(method: Callable) -> Callable:
       access to a redis instance is call.
     """
     @wraps(method)
-    def wrapper(self, data):
+    def wrapper(self, *args, **kwargs):
         """This is the wrapper itself."""
         key = method.__qualname__
         self._redis.incr(key)
-        return method(self, data)
+        return method(self, *args, **kwargs)
     return wrapper
 
 
 def call_history(method: Callable) -> Callable:
     """Keep history of the input and output of a method call."""
     @wraps(method)
-    def wrapper(self, data):
+    def wrapper(self, *args, **kwargs):
         """Wrapper for the decorator."""
         inp = f'{method.__qualname__}:inputs'
         out = f'{method.__qualname__}:outputs'
-        fn_out = method(self, data)
-        self._redis.rpush(inp, str(data))
+        fn_out = method(self, *args, **kwargs)
+        self._redis.rpush(inp, str(args))
         self._redis.rpush(out, fn_out)
         return fn_out
     return wrapper
