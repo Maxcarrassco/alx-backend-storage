@@ -1,2 +1,2 @@
 // insert key (name) with value (Holberton school) into school collection
-db.school.insertOne( { name: "Holberton school" } )
+db.school.insertOne( { name: "Holbertn school" } )

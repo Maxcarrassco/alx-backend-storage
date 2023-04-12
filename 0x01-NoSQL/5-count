@@ -1,0 +1,2 @@
+// Print the number of collections in my_db database
+db.getCollectionNames().length
