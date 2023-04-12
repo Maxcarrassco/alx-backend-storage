@@ -20,6 +20,20 @@ def count_calls(method: Callable) -> Callable:
     return wrapper
 
 
+def call_history(method: Callable) -> Callable:
+    """Keep history of the input and output of a method call."""
+    @wraps(method)
+    def wrapper(self, data):
+        """Wrapper for the decorator."""
+        inp = f'{method.__qualname__}:inputs'
+        out = f'{method.__qualname__}:outputs'
+        fn_out = method(self, data)
+        self._redis.rpush(inp, str(data))
+        self._redis.rpush(out, fn_out)
+        return self._redis.lrange(out, 0, -1)
+    return wrapper
+
+
 class Cache:
     """This model implement a simple caching machanism using redis."""
     def __init__(self) -> None:
@@ -27,6 +41,7 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
+    @call_history
     @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """
