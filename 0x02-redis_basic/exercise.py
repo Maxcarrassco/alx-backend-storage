@@ -12,11 +12,11 @@ def count_calls(fn: Callable) -> Callable:
       access to a redis instance is call.
     """
     @wraps(fn)
-    def wrapper(self, *args, **kwargs) -> Any:
+    def wrapper(self, data) -> str:
         """This is the wrapper itself."""
         key = fn.__qualname__
         self._redis.incr(key)
-        return fn(self, *args, **kwargs)
+        return fn(self, data)
     return wrapper
 
 
