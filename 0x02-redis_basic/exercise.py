@@ -16,7 +16,7 @@ def count_calls(fn: Callable) -> Callable:
         """This is the wrapper itself."""
         key = fn.__qualname__
         if self._redis.get(key):
-            self._redis.set(key, self.get(key, int) + 1)
+            self._redis.incr(key)
         else:
             self._redis.set(key, 1)
         return fn(self, *args, **kwargs)
