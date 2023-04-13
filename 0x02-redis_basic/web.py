@@ -20,6 +20,7 @@ def store_cache(method: Callable) -> Callable:
         return content
     return wrapper
 
+
 def track_url(method: Callable) -> Callable:
     """Cache a value for 10 seconds."""
     @wraps(method)
