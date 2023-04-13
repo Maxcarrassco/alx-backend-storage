@@ -34,13 +34,14 @@ def call_history(method: Callable) -> Callable:
     return wrapper
 
 
-def replay(method: Callable):
+def replay(method: Callable) -> None:
     """Print the replay of a method call."""
     fn_name = method.__qualname__
     inp = f'{fn_name}:inputs'
     out = f'{fn_name}:outputs'
     reds = redis.Redis()
-    print('{} was called {} times'.format(fn_name, reds.get(fn_name).decode()))
+    print('{} was called {} times:'.format(
+        fn_name, reds.get(fn_name).decode()))
     for i, o in zip(reds.lrange(inp, 0, -1), reds.lrange(out, 0, -1)):
         print('{}(*{}) -> {}'.format(
             fn_name, i.decode(), o.decode()))
