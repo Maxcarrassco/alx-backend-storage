@@ -12,11 +12,12 @@ def store_cache(fn: Callable) -> Callable:
     def wrapper(url: str) -> str:
         """The function wrapper."""
         cache = redis.Redis()
-        key = f'count:{url}'
-        if cache.get(key) is None:
-            cache.set(key, 0, 10)
-        cache.incr(key)
-        return fn(url)
+        cache.incr(f'count:{url}')
+        if cache.get(url):
+            return cache.get(url).decode()
+        content = fn(url)
+        cache.set(url, content, 10)
+        return content
     return wrapper
 
 
