@@ -9,7 +9,7 @@ from typing import Callable
 def store_cache(fn: Callable) -> Callable:
     """Cache a value for 10 seconds."""
     @wraps(fn)
-    def wrapper(url: str) -> str:
+    def wrapper(url):
         """The function wrapper."""
         cache = redis.Redis()
         cache.incr(f'count:{url}')
