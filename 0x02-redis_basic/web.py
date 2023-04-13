@@ -16,7 +16,7 @@ def store_cache(fn: Callable) -> Callable:
         if cache.get(url):
             return cache.get(url).decode()
         content = fn(url)
-        cache.set(url, content, 10)
+        cache.setex(url, content, 10)
         return content
     return wrapper
 
