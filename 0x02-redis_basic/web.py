@@ -5,13 +5,14 @@ import redis
 from functools import wraps
 from typing import Callable
 
+cache = redis.Redis()
+
 
 def store_cache(fn: Callable) -> Callable:
     """Cache a value for 10 seconds."""
     @wraps(fn)
     def wrapper(url):
         """The function wrapper."""
-        cache = redis.Redis()
         cache.incr(f'count:{url}')
         if cache.get(url):
             return cache.get(url).decode()
@@ -24,5 +25,7 @@ def store_cache(fn: Callable) -> Callable:
 @store_cache
 def get_page(url: str) -> str:
     """Get the content of a webpage."""
+    if cache.get(url):
+        return cache.get(url).decode()
     content = requests.get(url)
     return content.text
