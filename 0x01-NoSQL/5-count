@@ -1,2 +1,2 @@
-// Print the number of collections in my_db database
-db.getCollectionNames().length
+// Print the number documents in the collection school
+db.school.count()
